@@ -69,8 +69,14 @@ std::string Book::toString() const {
 }
 
 std::string Book::toFileFormat() const {
-    return "|" + title + "|" + author + "|" + isbn +
+    return title + "|" + author + "|" + isbn +
            "|" + (isAvailable ? "1" : "0") + "|" +
+           (isAvailable ? "" : borrowerName);
+}
+
+std::string Book::toCSVFormat() const {
+    return title + ";" + author + ";" + isbn +
+           ";" + (isAvailable ? "1" : "0") + ";" +
            (isAvailable ? "" : borrowerName);
 }
 

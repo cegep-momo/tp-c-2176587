@@ -6,12 +6,12 @@
 using namespace std;
 
 // Constructor
-FileManager::FileManager(const string& booksFile, const string& usersFile)
-    : booksFileName(booksFile), usersFileName(usersFile) {}
+FileManager::FileManager(const string& booksFile, const string& usersFile, const string& booksCSVFile, const string& usersCSVFile)
+    : booksFileName(booksFile), usersFileName(usersFile), booksCSVFileName(booksCSVFile), usersCSVFileName(usersCSVFile) {}
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
-    return saveBooksToFile(library) && saveUsersToFile(library);
+    return saveBooksToFile(library) && saveUsersToFile(library) && saveBooksToCSV(library) && saveUsersToCSV(library);
 }
 
 // Load all library data
@@ -120,4 +120,36 @@ void FileManager::createBackup() {
     }
     
     cout << "Fichiers de sauvegarde créés.\n";
+}
+
+bool FileManager::saveBooksToCSV(Library& library) {
+    ofstream file(booksCSVFileName);
+    if (!file.is_open()) {
+        cout << "Erreur : Impossible d'ouvrir " << booksCSVFileName << " en écriture.\n";
+        return false;
+    }
+    
+    auto books = library.getAllBooks();
+    for (Book* book : books) {
+        file << book->toCSVFormat() << "\n";
+    }
+    
+    file.close();
+    return true;
+}
+
+bool FileManager::saveUsersToCSV(Library& library) {
+    ofstream file(usersCSVFileName);
+    if (!file.is_open()) {
+        cout << "Erreur : Impossible d'ouvrir " << usersCSVFileName << " en écriture.\n";
+        return false;
+    }
+
+    auto users = library.getAllUsers();
+    for (User* user : users) {
+        file << user->toCSVFormat() << "\n";
+    }
+
+    file.close();
+    return true;
 }

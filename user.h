@@ -34,6 +34,7 @@ public:
     string toString() const;
     string toFileFormat() const;
     void fromFileFormat(const string& line);
+    string toCSVFormat() const;
 };
 
 #endif
