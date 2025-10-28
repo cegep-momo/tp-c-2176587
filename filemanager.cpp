@@ -1,13 +1,14 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+#include <ctime>
 #include "filemanager.h"
 
 using namespace std;
 
 // Constructor
-FileManager::FileManager(const string& booksFile, const string& usersFile, const string& booksCSVFile, const string& usersCSVFile)
-    : booksFileName(booksFile), usersFileName(usersFile), booksCSVFileName(booksCSVFile), usersCSVFileName(usersCSVFile) {}
+FileManager::FileManager(const string& booksFile, const string& usersFile, const string& booksCSVFile, const string& usersCSVFile, const string& logFile)
+    : booksFileName(booksFile), usersFileName(usersFile), booksCSVFileName(booksCSVFile), usersCSVFileName(usersCSVFile), logFileName(logFile) {}
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
@@ -210,4 +211,18 @@ bool FileManager::saveUsersToCSV(Library& library) {
 
     file.close();
     return true;
+}
+
+void FileManager::logToFile(const string& message) {
+    time_t timestamp = time(NULL);
+    struct tm datetime = *localtime(&timestamp);
+    datetime.tm_isdst = -1;
+    char output[50];
+    strftime(output, 50, "%m-%d-%y_%H-%M-%S", &datetime);
+
+    ofstream logF(logFileName, ios::app);
+    if (logF.is_open()) {
+        logF << "[" << output << "] " << message << endl;
+        logF.close();
+    }
 }

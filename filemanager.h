@@ -13,13 +13,15 @@ private:
     string usersFileName;
     string booksCSVFileName;
     string usersCSVFileName;
+    string logFileName;
 
 public:
     // Constructor
     FileManager(const string& booksFile = "books.txt", 
                 const string& usersFile = "users.txt",
                 const string& booksCSVFile = "books.csv",
-                const string& usersCSVFile = "users.csv");
+                const string& usersCSVFile = "users.csv",
+                const string& logFile = "biblio.log");
     
     // File operations
     bool saveLibraryData(Library& library);
@@ -41,6 +43,7 @@ public:
     // Utility methods
     bool fileExists(const string& filename);
     void createBackup();
+    void logToFile(const string& message);
 };
 
 #endif

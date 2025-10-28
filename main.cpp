@@ -32,7 +32,7 @@ void displayMenu() {
     cout << "9.  Emprunter un Livre\n";
     cout << "10. Retourner un Livre\n";
     cout << "11. Statistiques de la Bibliothèque\n";
-    cout << "12. Sauvegarder les Données (en JSON)\n";
+    cout << "12. Sauvegarder les Données (en TXT)\n";
     cout << "13. Sauvegarder les Données (en CSV)\n";
     cout << "14. Créer une Sauvegarde\n";
     cout << "15. Importer à partir de " + string(isCSV ? "TXT" : "CSV") + "\n";
@@ -179,8 +179,10 @@ int main() {
                 string userId = getInput("Entrez l'ID de l'utilisateur : ");
                 
                 if (library.checkOutBook(isbn, userId)) {
+                    fileManager.logToFile("Livre avec ISBN: " + isbn + " emprunté par l'utilisateur: " + userId);
                     cout << "Livre emprunté avec succès !\n";
                 } else {
+                    fileManager.logToFile("Échec de l'emprunt du livre avec ISBN: " + isbn + " par l'utilisateur: " + userId);
                     cout << "Erreur : Impossible d'emprunter le livre. Vérifiez l'ISBN, l'ID utilisateur et la disponibilité du livre.\n";
                 }
                 pauseForInput();
@@ -191,8 +193,10 @@ int main() {
                 string isbn = getInput("Entrez l'ISBN du livre à retourner : ");
                 
                 if (library.returnBook(isbn)) {
+                    fileManager.logToFile("Livre avec ISBN: " + isbn + " retourné.");
                     cout << "Livre retourné avec succès !\n";
                 } else {
+                    fileManager.logToFile("Échec du retour du livre avec ISBN: " + isbn);
                     cout << "Erreur : Impossible de retourner le livre. Vérifiez l'ISBN et que le livre est bien emprunté.\n";
                 }
                 pauseForInput();
