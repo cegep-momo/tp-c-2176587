@@ -23,7 +23,9 @@ public:
     
     // File operations
     bool saveLibraryData(Library& library);
+    bool saveLibraryDataCSV(Library& library);
     bool loadLibraryData(Library& library);
+    bool loadLibraryDataCSV(Library& library);
     
     // Individual file operations
     bool saveBooksToFile(Library& library);
@@ -34,7 +36,8 @@ public:
     bool saveUsersToCSV(Library& library);
     bool loadBooksFromCSV(Library& library);
     bool loadUsersFromCSV(Library& library);
-    
+  
+
     // Utility methods
     bool fileExists(const string& filename);
     void createBackup();

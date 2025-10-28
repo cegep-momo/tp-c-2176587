@@ -100,3 +100,23 @@ void User::fromFileFormat(const string& line) {
         }
     }
 }
+
+void User::fromCSVFormat(const string& line) {
+    stringstream ss(line);
+    string token;
+
+    getline(ss, name, ';');
+    getline(ss, userId, ';');
+    
+    string booksStr;
+    getline(ss, booksStr, ';');
+    
+    borrowedBooks.clear();
+    if (!booksStr.empty()) {
+        stringstream booksSs(booksStr);
+        string isbn;
+        while (getline(booksSs, isbn, ',')) {
+            borrowedBooks.push_back(isbn);
+        }
+    }
+}

@@ -7,6 +7,8 @@
 
 using namespace std;
 
+bool isCSV = false;
+
 void clearScreen() {
     system("cls || clear");
 }
@@ -30,8 +32,10 @@ void displayMenu() {
     cout << "9.  Emprunter un Livre\n";
     cout << "10. Retourner un Livre\n";
     cout << "11. Statistiques de la Bibliothèque\n";
-    cout << "12. Sauvegarder les Données\n";
-    cout << "13. Créer une Sauvegarde\n";
+    cout << "12. Sauvegarder les Données (en JSON)\n";
+    cout << "13. Sauvegarder les Données (en CSV)\n";
+    cout << "14. Créer une Sauvegarde\n";
+    cout << "15. Importer à partir de " + string(isCSV ? "TXT" : "CSV") + "\n";
     cout << "0.  Quitter\n";
     cout << "======================================================\n";
     cout << "Entrez votre choix : ";
@@ -215,8 +219,27 @@ int main() {
                 break;
             }
             
-            case 13: { // Create Backup
+            case 14: { // Create Backup
                 fileManager.createBackup();
+                pauseForInput();
+                break;
+            }
+
+            case 13: { // Save Data (CSV)
+                if (fileManager.saveLibraryDataCSV(library)) {
+                    cout << "Données de la bibliothèque sauvegardées avec succès au format CSV !\n";
+                } else {
+                    cout << "Erreur lors de la sauvegarde des données de la bibliothèque au format CSV.\n";
+                }
+                pauseForInput();
+                break;
+            }
+
+            case 15: { // Create Backup
+                if (isCSV)
+                    fileManager.loadLibraryData(library);
+                else
+                    fileManager.loadLibraryDataCSV(library);
                 pauseForInput();
                 break;
             }

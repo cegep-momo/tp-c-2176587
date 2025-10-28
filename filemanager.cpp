@@ -11,13 +11,23 @@ FileManager::FileManager(const string& booksFile, const string& usersFile, const
 
 // Save all library data
 bool FileManager::saveLibraryData(Library& library) {
-    return saveBooksToFile(library) && saveUsersToFile(library) && saveBooksToCSV(library) && saveUsersToCSV(library);
+    return saveBooksToFile(library) && saveUsersToFile(library);
+}
+bool FileManager::saveLibraryDataCSV(Library& library) {
+    return saveBooksToCSV(library) && saveUsersToCSV(library);
 }
 
 // Load all library data
 bool FileManager::loadLibraryData(Library& library) {
     bool booksLoaded = loadBooksFromFile(library);
     bool usersLoaded = loadUsersFromFile(library);
+    return booksLoaded || usersLoaded; // Return true if at least one file was loaded
+}
+
+// Load all library data from CSV
+bool FileManager::loadLibraryDataCSV(Library& library) {
+    bool booksLoaded = loadBooksFromCSV(library);
+    bool usersLoaded = loadUsersFromCSV(library);
     return booksLoaded || usersLoaded; // Return true if at least one file was loaded
 }
 
@@ -87,6 +97,54 @@ bool FileManager::loadUsersFromFile(Library& library) {
         return false;
     }
     
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        if (!line.empty()) {
+            User user;
+            user.fromFileFormat(line);
+            library.addUser(user);
+            count++;
+        }
+    }
+    
+    file.close();
+    cout << "Chargé " << count << " utilisateur(s) depuis le fichier.\n";
+    return true;
+}
+
+// Load books from csv
+bool FileManager::loadBooksFromCSV(Library& library) {
+    ifstream file(booksCSVFileName);
+    if (!file.is_open()) {
+        cout << "Aucun fichier de livres existant trouvé.\n";
+        return false;
+    }
+    library.cleanBooks();
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        if (!line.empty()) {
+            Book book;
+            book.fromCSVFormat(line);
+            library.addBook(book);
+            count++;
+        }
+    }
+    
+    file.close();
+    cout << "Chargé " << count << " livre(s) depuis le fichier.\n";
+    return true;
+}
+
+// Load users from file
+bool FileManager::loadUsersFromCSV(Library& library) {
+    ifstream file(usersFileName);
+    if (!file.is_open()) {
+        cout << "Aucun fichier d'utilisateurs existant trouvé.\n";
+        return false;
+    }
+    library.cleanUsers();
     string line;
     int count = 0;
     while (getline(file, line)) {

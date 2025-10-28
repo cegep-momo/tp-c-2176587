@@ -21,6 +21,7 @@ public:
     
     // Book management
     void addBook(const Book& book);
+    void cleanBooks();
     bool removeBook(const string& isbn);
     Book* findBookByISBN(const string& isbn);
     vector<Book*> searchBooksByTitle(const string& title);
@@ -32,6 +33,7 @@ public:
     void addUser(const User& user);
     User* findUserById(const string& userId);
     vector<User*> getAllUsers();
+    void cleanUsers();
     
     // Library operations
     bool checkOutBook(const string& isbn, const string& userId);

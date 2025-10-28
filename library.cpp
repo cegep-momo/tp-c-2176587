@@ -201,4 +201,13 @@ int Library::getAvailableBookCount() const {
             return book->getAvailability();
         });
 }
+
+void Library::cleanBooks() {
+    books.clear();
+}
+
+void Library::cleanUsers() {
+    users.clear();
+}
+
 int Library::getCheckedOutBookCount() const { return getTotalBooks() - getAvailableBookCount(); }
