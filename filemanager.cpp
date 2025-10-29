@@ -224,5 +224,9 @@ void FileManager::logToFile(const string& message) {
     if (logF.is_open()) {
         logF << "[" << output << "] " << message << endl;
         logF.close();
+    }else
+    {
+        cout << "Erreur : Impossible d'ouvrir " << logFileName << " en écriture pour le log.\n";
     }
+    
 }
